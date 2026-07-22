@@ -15,8 +15,13 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.appgestortareas.presentation.screens.AgregarScreen
 import com.example.appgestortareas.presentation.screens.InicioScreen
-import com.example.appgestortareas.presentation.screens.ListaScreen
+
 import com.example.appgestortareas.presentation.viewmodel.TareaViewModel
+import android.util.Log
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
+
+import com.example.appgestortareas.presentation.screens.CompletadasScreen
 
 @Composable
 fun AppNavigation(vm: TareaViewModel) {
@@ -26,7 +31,7 @@ fun AppNavigation(vm: TareaViewModel) {
     val opciones = listOf(
         BottomNavItem.Inicio,
         BottomNavItem.Agregar,
-        BottomNavItem.Lista
+        BottomNavItem.Completadas
     )
 
     Scaffold(
@@ -77,15 +82,42 @@ fun AppNavigation(vm: TareaViewModel) {
         ) {
 
             composable(NavRutas.INICIO) {
-                InicioScreen()
+                InicioScreen(vm, navController)
             }
 
             composable(NavRutas.AGREGAR) {
-                AgregarScreen(vm)
+                AgregarScreen(vm, navController)
             }
 
-            composable(NavRutas.LISTA) {
-                ListaScreen()
+            composable(NavRutas.COMPLETADAS) {
+                CompletadasScreen(
+                    vm = vm,
+                    navController = navController
+                )
+            }
+           // composable("${NavRutas.EDITAR}/{id}"){url->
+             //   val id=url.arguments?.getInt("id")?:0
+
+               // Log.d("EDITAR", "AppNavigation recibió id = $id")
+                //AgregarScreen(vm,navController,id)
+
+            //}
+            composable(
+                route = "${NavRutas.EDITAR}/{id}",
+                arguments = listOf(
+                    navArgument("id") {
+                        type = NavType.IntType
+                    }
+                )
+            ) { backStackEntry ->
+
+                val id = backStackEntry.arguments?.getInt("id") ?: 0
+
+                Log.d("EDITAR", "Ruta destino = ${backStackEntry.destination.route}")
+                Log.d("EDITAR", "Arguments = ${backStackEntry.arguments}")
+                Log.d("EDITAR", "Id = ${backStackEntry.arguments?.getInt("id")}")
+
+                AgregarScreen(vm, navController, id)
             }
 
         }

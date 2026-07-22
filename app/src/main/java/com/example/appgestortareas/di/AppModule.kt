@@ -5,7 +5,11 @@ import androidx.room.Room
 import com.example.appgestortareas.data.local.db.AppDatabase
 import com.example.appgestortareas.data.repository.TareaRepositoryImpl
 import com.example.appgestortareas.domain.repository.TareaRepository
+import com.example.appgestortareas.domain.usecase.ActualizarTareaUseCase
 import com.example.appgestortareas.domain.usecase.AgregarTareaUseCase
+import com.example.appgestortareas.domain.usecase.EliminarTareaUseCase
+import com.example.appgestortareas.domain.usecase.GetTareaUseCase
+import com.example.appgestortareas.domain.usecase.GetTareasUseCase
 import com.example.appgestortareas.domain.usecase.TareaUseCase
 import com.example.appgestortareas.presentation.viewmodel.TareaViewModel
 
@@ -37,7 +41,16 @@ object AppModule {
         val repository = provideTareaRepository(context)
 
         return TareaUseCase(
-            agregarTarea = AgregarTareaUseCase(repository)
+            agregarTarea = AgregarTareaUseCase(repository),
+
+            getTareas = GetTareasUseCase(repository),
+
+            getTarea = GetTareaUseCase(repository),
+
+            actualizarTarea = ActualizarTareaUseCase(repository),
+
+            eliminarTarea = EliminarTareaUseCase(repository)
+
         )
 
     }

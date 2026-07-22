@@ -2,6 +2,7 @@ package com.example.appgestortareas.core.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
@@ -25,10 +26,10 @@ sealed class BottomNavItem(
         icono = Icons.Default.Add
     )
 
-    data object Lista : BottomNavItem(
-        ruta = NavRutas.LISTA,
-        titulo = "Lista",
-        icono = Icons.Default.FilterList
+    data object Completadas : BottomNavItem(
+        ruta = NavRutas.COMPLETADAS,
+        titulo = "Completadas",
+        icono = Icons.Default.CheckCircle
     )
 }
 

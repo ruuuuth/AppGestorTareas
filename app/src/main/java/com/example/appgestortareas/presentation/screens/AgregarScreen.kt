@@ -37,11 +37,14 @@ import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.rememberDatePickerState
+import androidx.navigation.NavController
+import com.example.appgestortareas.core.navigation.NavRutas
+import android.util.Log
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AgregarScreen(vm: TareaViewModel) {
+fun AgregarScreen(vm: TareaViewModel, navController: NavController,id: Int=0) {
 
     var titulo by remember { mutableStateOf("") }
     var descripcion by remember { mutableStateOf("") }
@@ -59,6 +62,31 @@ fun AgregarScreen(vm: TareaViewModel) {
 
     val uiState by vm.uiState.collectAsState()
 
+/////
+    LaunchedEffect(id) {
+        Log.d("EDITAR", "AgregarScreen recibió id = $id")
+        if (id != 0) {
+
+            vm.obtenerTarea(id)
+
+        }
+
+    }
+    LaunchedEffect(uiState.tarea) {
+
+        uiState.tarea?.let { tarea ->
+
+            titulo = tarea.titulo
+            descripcion = tarea.descripcion
+            fecha = tarea.fecha
+            prioridad = tarea.prioridad
+
+        }
+
+    }
+
+
+    ///
     val snackbarHostState = remember {
         SnackbarHostState()
     }
@@ -76,13 +104,14 @@ fun AgregarScreen(vm: TareaViewModel) {
                 }
 
                 TareaUiEvent.NavigateBack -> {
-
+                    navController.navigate(NavRutas.INICIO)
                     snackbarHostState.showSnackbar("Tarea guardada correctamente")
 
                     titulo = ""
                     descripcion = ""
                     fecha = ""
                     prioridad = "Alta"
+
 
                 }
 
@@ -322,7 +351,7 @@ fun AgregarScreen(vm: TareaViewModel) {
 
                         val tarea = Tarea(
 
-                            id = 0,
+                            id = id,
 
                             titulo = titulo,
 
@@ -336,7 +365,14 @@ fun AgregarScreen(vm: TareaViewModel) {
 
                         )
 
-                        vm.guardarTarea(tarea)
+                        if (id==0){
+                            vm.guardarTarea(tarea)
+                        }else{
+
+                            vm.actualizarTarea(tarea)
+                        }
+
+
 
                     },
 
@@ -380,7 +416,7 @@ fun AgregarScreen(vm: TareaViewModel) {
                                 "dd/MM/yyyy",
                                 java.util.Locale.getDefault()
                             )
-
+                            formatter.timeZone = java.util.TimeZone.getTimeZone("UTC")
                             fecha = formatter.format(java.util.Date(millis))
 
                             fechaError = false

@@ -17,4 +17,19 @@ class TareaRepositoryImpl(
 
     }
 
+    override suspend fun getAll(): List<Tarea> =
+       dao.getAll().map { TareaMapper.toDomain(it) }
+
+    override suspend fun getTareabyId(id: Int): Tarea =
+        dao.getTareaById(id).let { TareaMapper.toDomain(it) }
+
+    override suspend fun actualizar(tarea: Tarea) {
+       dao.actualizar(TareaMapper.toEntity(tarea))
+    }
+
+    override suspend fun eliminar(tarea: Tarea) {
+        dao.eliminar(TareaMapper.toEntity(tarea))
+    }
+
+
 }
