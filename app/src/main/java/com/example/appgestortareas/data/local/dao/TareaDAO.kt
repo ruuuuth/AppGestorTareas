@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.example.appgestortareas.data.local.entity.TareaEntity
-import com.example.appgestortareas.domain.model.Tarea
+
 
 @Dao
 interface TareaDAO {
