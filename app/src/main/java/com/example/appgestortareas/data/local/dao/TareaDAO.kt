@@ -10,7 +10,7 @@ import com.example.appgestortareas.data.local.entity.TareaEntity
 
 @Dao
 interface TareaDAO {
-
+    // Inserta una nueva tarea en la base de datos de forma asíncrona
     @Insert
     suspend fun agregar(tarea: TareaEntity)
     @Query("SELECT * FROM tareas")
