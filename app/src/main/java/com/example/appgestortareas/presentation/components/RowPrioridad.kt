@@ -1,4 +1,4 @@
-package com.example.appgestortareas.presentation.screens
+package com.example.appgestortareas.presentation.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
